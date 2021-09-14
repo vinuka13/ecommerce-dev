@@ -6,12 +6,15 @@ class APIFeatures {
 
       search(){
 
-        this.query = this.query.find({name: {
-            $regex : this.queryStr.keyword,
-            $options: 'i'
-         }})
+        const keyword = this.queryStr.keyword ? {
+          name: {
+              $regex: this.queryStr.keyword,
+              $options: 'i'
+          }
+      } : {}
 
-        return this;
+      this.query = this.query.find({ ...keyword });
+      return this;
       }
 
       filter(){
