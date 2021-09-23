@@ -21,6 +21,40 @@ module.exports = function(err, req, res, next){
              message: errorMessage.toString()
          })
      }
+
+
+  //mongoose duplicate key error
+     if(err.code === 11000){
+
+        const message = `duplicate ${Object.keys(err.keyValues)} entered`
+
+        res.send({
+            success: false,
+            message
+        })
+     }
+
+  //jwt error
+
+     if(err.name === 'JsonWebTokenError'){
+
+        const message = 'Json web token is invalid'
+
+        res.send({
+            success: false,
+            message
+        })
+     }
+
+     if(err.name === 'TokenExpiresError'){
+
+        const message = 'Json web token expired'
+
+        res.send({
+            success: false,
+            message
+        })
+     }
     
   //other errors
     res.status(err.statusCode).json ({

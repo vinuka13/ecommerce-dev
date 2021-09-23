@@ -3,7 +3,10 @@ const ErrorHandler = require('../utilis/errorHandler')
 const catchAsyncErrors = require("../middlewear/catchAsyncErrors")
 const APIFeatures = require("../utilis/apiFeatures")
 
+
 exports.newProduct = catchAsyncErrors (async function(req, res, next){
+
+    req.body.user = req.user.id
 
     const product = await Product.create(req.body);
 
