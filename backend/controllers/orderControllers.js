@@ -1,5 +1,6 @@
 const Order = require("../modules/orders");
 const catchAsyncErrors = require("../middlewear/catchAsyncErrors")
+const Product = require("../modules/product")
 const ErrorHandler = require('../utilis/errorHandler')
 
 //create new order
@@ -36,9 +37,9 @@ exports.newOrder = catchAsyncErrors (async function(req, res){
 
 //get single order
 
-exports.getOneOrder = catchAsyncErrors (async function(req, res){
+exports.getOneOrder = catchAsyncErrors (async function(req, res, next){
 
-    const order = await Order.findById(req.params._id)
+    const order = await Order.findById(req.params.id).populate('user', 'name email')
 
     if(!order){
         return next(new ErrorHandler('Order not found', 404))
@@ -52,10 +53,12 @@ exports.getOneOrder = catchAsyncErrors (async function(req, res){
 
 //get orders of user
 
-exports.myOrders = catchAsyncErrors(async (req, res, next) => {
-    const orders = await Order.find({ user: req.user.id })
+exports.myOrders = catchAsyncErrors (async (req, res, next) => {
 
-    res.status(200).json({
+    const orders = await Order.find({ user: req.user.id })
+    console.log(req.user.id);
+
+    res.send({
         success: true,
         orders
     })

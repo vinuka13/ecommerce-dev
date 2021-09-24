@@ -7,7 +7,8 @@ module.exports = function(err, req, res, next){
     if(err.name === 'CastError') {
         res.send({
             success: false,
-            message: `Reasource not found. Invalid: ${err.path}`
+            message: `Reasource not found. Invalid: ${err.path}`,
+            stack: err.stack
         })
     }
 
